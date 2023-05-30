@@ -1,30 +1,48 @@
 console.log("Welcome to the Strategy Design Pattern Exercise")
 
 
+
+class CartItem {
+  private amount:number;
+  private description:string;
+
+  constructor(amount:number, description: string) {
+    this.amount = amount;
+    this.description = description;
+  }
+
+  getAmount():number {
+    return this.amount;
+  }
+  getDescription():string {
+    return this.description;
+  }
+}
+
 class ShoppingCart {
-    private items: string[];
+    private items: CartItem[];
     
     constructor() {
       this.items = [];
     }
   
-    addItem(item: string): void {
+    addItem(item: CartItem): void {
       this.items.push(item);
     }
   
-    payCash(amount:number) {
-        console.log(`Paid things: ${amount}`)
-    }
+    
     
     checkout(): void {
-      const totalAmount = this.calculateTotalAmount();
-      this.payCash(totalAmount);
-      this.items = [];
+      console.log("Paying: " + this.calculateTotalAmount());
+      // call our paymentStrategy
     }
   
     private calculateTotalAmount(): number {
-      // Calculate the total amount based on items
-      return this.items.length * 10;
+      let total = 0;
+      this.items.forEach(item => {
+        total += item.getAmount();
+      })
+      return total;
     }
   }
   
@@ -32,9 +50,9 @@ class ShoppingCart {
   const cart = new ShoppingCart();
   
   // Add items to the shopping cart
-  cart.addItem("Item 1");
-  cart.addItem("Item 2");
-  cart.addItem("Item 3");
+  cart.addItem(new CartItem(1000, "Iphone"));
+  cart.addItem(new CartItem(2000, "Macbook"));
+  cart.addItem(new CartItem(1500, "Asus"));
   
   cart.checkout();
   // Output: "Paying $30 with credit card 1234567890123456"
